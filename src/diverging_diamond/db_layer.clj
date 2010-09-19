@@ -42,3 +42,28 @@
     (sql/with-query-results res
       ["select * from links"]
       (doall res))))
+
+;;;;;;;user management;;;;;;;;;;;
+(defn add-user [name password]
+  (let [psw (BCrypt/hashpw password (BCrypt/gensalt))]
+    (sql/with-connection db
+      (seq
+       (sql/insert-values :users
+         [:username :password]
+	 [name psw])))))
+
+(defn find-user [name]
+  (sql/with-connection db
+    (sql/with-query-results res
+      ["select username,password from users where username=?" name]
+      (first (doall res)))))
+
+(defn get-hash [name]
+  (sql/with-connection db
+   (sql/with-query-results res
+     ["select password from users where username=?" name]
+     (:password (first (doall res))))))
+
+(defn validate [name password]
+  (if-let [psw (get-hash name)]
+    (BCrypt/checkpw password psw)))

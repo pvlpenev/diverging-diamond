@@ -15,6 +15,7 @@
      [:h1 "Basic Compojure Application with Styles"
       [:span [:a {:href "/" :id "home"} "Home"]]
       [:span [:a {:href "/add" :class "add"} "Add link"]]
+      [:span (link-to "/logout" "Logout")]
       [:span [:a {:href "/register" :class "add"} "Register user"]]]]
     [:div {:id "content"}
      [:div {:id "greeting"} body]]]))
