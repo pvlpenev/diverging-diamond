@@ -1,16 +1,6 @@
-# diverging-diamond
+#Diverging-diamond
 
-FIXME: write description
-
-## Usage
-
-FIXME: write
-
-## Installation
-
-FIXME: write
-
-## License
+A small reddit clone written in clojure
 
 Copyright (C) 2010 FIXME
 

@@ -21,7 +21,9 @@
 	[:span (link-to "/logout" "Logout")]
 	[:span (link-to "/login"  "Log-in")])
 
-      [:span [:a {:href "/register" :class "add"} "Register user"]]]]
+      (when-not (any-role-granted? :admin :user)
+	[:span [:a {:href "/register" :class "add"} "Register user"]])]]
+    
     [:div {:id "content"}
      [:div {:id "greeting"} body]]]))
 
