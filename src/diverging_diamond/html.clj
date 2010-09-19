@@ -1,7 +1,8 @@
 (ns diverging-diamond.html
   (:use [hiccup.core :only [html]]
         [hiccup.page-helpers]
-	[hiccup.form-helpers])
+	[hiccup.form-helpers]
+	[sandbar.auth :only [any-role-granted?]])
   (:require [diverging-diamond.db-layer :as db]))
 
 (defn layout [title body]
@@ -15,7 +16,11 @@
      [:h1 "Basic Compojure Application with Styles"
       [:span [:a {:href "/" :id "home"} "Home"]]
       [:span [:a {:href "/add" :class "add"} "Add link"]]
-      [:span (link-to "/logout" "Logout")]
+
+      (if (any-role-granted? :admin :user)
+	[:span (link-to "/logout" "Logout")]
+	[:span (link-to "/login"  "Log-in")])
+
       [:span [:a {:href "/register" :class "add"} "Register user"]]]]
     [:div {:id "content"}
      [:div {:id "greeting"} body]]]))
