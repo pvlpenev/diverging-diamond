@@ -1,1 +1,2 @@
-(ns diverging-diamond.core)
+(ns diverging-diamond.core
+  (:require [diverging-diamond.db-layer :as db]))
