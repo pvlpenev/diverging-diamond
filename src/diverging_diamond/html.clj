@@ -1,6 +1,8 @@
 (ns diverging-diamond.html
   (:use [hiccup.core :only [html]]
-        [hiccup.page-helpers :only [doctype include-css]]))
+        [hiccup.page-helpers]
+	[hiccup.form-helpers])
+  (:require [diverging-diamond.db-layer :as db]))
 
 (defn layout [title body]
   (html
@@ -16,3 +18,19 @@
     [:div {:id "content"}
      [:div {:id "greeting"} body]]]))
 
+(defn home []
+  (let [links (db/get-links)]
+    (layout "Home"
+	    (for [link links]
+	       [:div (:id link) ". "  [:a {:href (:url link)} (:title link)]]))))
+
+(defn add-form []
+  (layout "Add a link"
+   (form-to [:post "/add" ]
+	    [:div {:class "form"}
+	     "Title: "
+	     (text-field "title")]
+	    [:div {:class "form"}
+	     "Url: "
+	     (text-field "url")]
+	    (submit-button "Save" ))))

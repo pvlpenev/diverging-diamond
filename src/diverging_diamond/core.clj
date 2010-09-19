@@ -1,18 +1,16 @@
 (ns diverging-diamond.core
-  (:use [diverging-diamond.db-layer :as db]
-	[diverging-diamond.html :as html]
-	[ring.adapter.jetty :only [run-jetty]]
+  (:use [ring.adapter.jetty :only [run-jetty]]
+	[ring.util.response :only [redirect]]
         [compojure.core])
-  (:require [compojure.route :as route]))
-
-(defn home []
-  (let [links (db/get-links)]
-    (layout "Home"
-	    (for [link links]
-	       [:div (:id link) [:a {:href (:url link)} (:title link)]]))))
+  (:require [compojure.route :as route]
+	    [diverging-diamond.db-layer :as db]
+	    [diverging-diamond.html :as html]))
 
 (defroutes ddroutes
-  (GET "/" [] (home))
+  (GET "/" [] (html/home))
+  (GET "/add" [] (html/add-form))
+  (POST "/add" [title url] (db/add-link-to-db title url)
+	                   (redirect "/"))
   (route/files "/")
   (route/not-found "<h1>Not Found</h1>"))
 

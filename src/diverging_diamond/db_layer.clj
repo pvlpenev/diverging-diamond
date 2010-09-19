@@ -18,7 +18,7 @@
   "create an sql timestamp"
   (java.sql.Timestamp. (.getTime (java.util.Date.))))
 
-(defn add-link [title url]
+(defn add-link-to-db [title url]
   "add a link to the db"
   (let [timestamp (now)]
     (sql/with-connection db
