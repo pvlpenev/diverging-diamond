@@ -1,5 +1,6 @@
 (ns diverging-diamond.db-layer
-  (:use [clojure.contrib.sql :as sql]))
+  (:use [clojure.contrib.sql :as sql])
+  (:import jBCrypt.BCrypt))
 
 (def db {:classname "org.sqlite.JDBC"
 	 :subprotocol "sqlite"
@@ -8,11 +9,19 @@
 (defn initdb []
   (sql/with-connection db
    (sql/create-table
-      :links
+      :links0
       [:id "INTEGER" "PRIMARY KEY"]
       [:title :text "NOT NULL"]
       [:url :text "NOT NULL"]
       [:created_at :datetime])))
+
+(defn create-users []
+  (sql/with-connection db
+    (sql/create-table
+     :users
+     [:id "INTEGER" "PRIMARY KEY"]
+     [:username :text "NOT NULL"]
+     [:password :text "NOT NULL"])))
 
 (defn now []
   "create an sql timestamp"
