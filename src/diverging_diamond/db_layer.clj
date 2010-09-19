@@ -29,7 +29,10 @@
 
 (defn add-link-to-db [title url]
   "add a link to the db"
-  (let [timestamp (now)]
+  (let [timestamp (now)
+	url (if (re-matches #"http://.*" url)
+	      url
+	      (str "http://" url))]
     (sql/with-connection db
       (seq
        (sql/insert-values :links
