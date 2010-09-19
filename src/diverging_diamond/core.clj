@@ -11,6 +11,9 @@
   (GET "/add" [] (html/add-form))
   (POST "/add" [title url] (db/add-link-to-db title url)
 	                   (redirect "/"))
+  (GET "/register" [] (html/add-user-form))
+  (POST "/register" [name password] (db/add-user name password)
+	                           (redirect "/"))
   (route/files "/")
   (route/not-found "<h1>Not Found</h1>"))
 

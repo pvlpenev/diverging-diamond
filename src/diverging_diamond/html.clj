@@ -14,7 +14,8 @@
     [:div {:id "header"}
      [:h1 "Basic Compojure Application with Styles"
       [:span [:a {:href "/" :id "home"} "Home"]]
-      [:span [:a {:href "/add" :id "add"} "Add link"]]]]
+      [:span [:a {:href "/add" :class "add"} "Add link"]]
+      [:span [:a {:href "/register" :class "add"} "Register user"]]]]
     [:div {:id "content"}
      [:div {:id "greeting"} body]]]))
 
@@ -33,4 +34,15 @@
 	    [:div {:class "form"}
 	     "Url: "
 	     (text-field "url")]
+	    (submit-button "Save" ))))
+
+(defn add-user-form []
+  (layout "Register a new user"
+   (form-to [:post "/register" ]
+	    [:div {:class "form"}
+	     "Username: "
+	     (text-field "name")]
+	    [:div {:class "form"}
+	     "Password: "
+	     (password-field "password")]
 	    (submit-button "Save" ))))
