@@ -15,6 +15,7 @@
   FormAuthAdapter
   
   (load-user [this username password]
+	     ;;FIXME add admin roles
       (merge (db/find-user username)
 	     {:login-password password :roles #{:user}}))
   

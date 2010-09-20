@@ -27,11 +27,15 @@
     [:div {:id "content"}
      [:div {:id "greeting"} body]]]))
 
+;;TODO: rewrite home with new features
+
 (defn home []
   (let [links (db/get-links)]
     (layout "Home"
 	    (for [link links]
 	       [:div (:id link) ". "  [:a {:href (:url link)} (:title link)]]))))
+
+;;FIXME: add form validation
 
 (defn add-form []
   (layout "Add a link"
