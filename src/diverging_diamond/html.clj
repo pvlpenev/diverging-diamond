@@ -2,7 +2,7 @@
   (:use [hiccup.core :only [html]]
         [hiccup.page-helpers]
 	[hiccup.form-helpers]
-	[sandbar.auth :only [any-role-granted?]])
+	[sandbar.auth :only [any-role-granted? current-username]])
   (:require [diverging-diamond.db-layer :as db]))
 
 (defn layout [title body]
@@ -18,7 +18,7 @@
       [:span [:a {:href "/add" :class "add"} "Add link"]]
 
       (if (any-role-granted? :admin :user)
-	[:span (link-to "/logout" "Logout")]
+	[:span (link-to  "/logout" (str "Log out (" (current-username)")"))]
 	[:span (link-to "/login"  "Log-in")])
 
       (when-not (any-role-granted? :admin :user)

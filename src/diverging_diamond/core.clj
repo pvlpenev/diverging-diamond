@@ -13,18 +13,18 @@
 
 (defrecord AuthAdapter []
   FormAuthAdapter
+  
   (load-user [this username password]
-             (let [user (merge (db/find-user username)
-			       {:login-password password})]
-	       (if (= (:username user) "admin")
-		 (merge user {:roles #{:admin}})
-		 (merge user {:roles #{:user}}))))
+      (merge (db/find-user username)
+	     {:login-password password :roles #{:user}}))
+  
   (validate-password [this]
                      (fn [m]
-                       (if (BCrypt/checkpw (:login-password m)
-					   (:password m))
-                         m
-                         (add-validation-error m "Unable to authenticate user.")))))
+                       (let [p (BCrypt/checkpw (:login-password m)
+					    (:password m))]
+			 (if p
+			   m
+			   (add-validation-error m :password "Unable to authenticate user."))))))
 	     
 
 (defn form-authentication-adapter []
@@ -34,6 +34,7 @@
     :password "Password"
     :username-validation-error "You must supply a valid username."
     :password-validation-error "You must supply a password."
+    :login-page "/"
     :logout-page "/"}))
 
 (def security-policy
@@ -53,7 +54,7 @@
   (GET "/register" [] (html/add-user-form))
   (POST "/register" [name password] (db/add-user name password)
 	                           (redirect "/"))
-  (form-authentication-routes (fn [_ c] (layout "Login" c)) (form-authentication-adapter))
+  (form-authentication-routes (fn [_ c] (html/layout "Login" c)) (form-authentication-adapter))
   (route/files "/")
   (route/not-found "<h1>Not Found</h1>"))
 

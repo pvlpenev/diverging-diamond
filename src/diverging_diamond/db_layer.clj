@@ -9,7 +9,7 @@
 (defn initdb []
   (sql/with-connection db
    (sql/create-table
-      :links0
+      :links
       [:id "INTEGER" "PRIMARY KEY"]
       [:title :text "NOT NULL"]
       [:url :text "NOT NULL"]
