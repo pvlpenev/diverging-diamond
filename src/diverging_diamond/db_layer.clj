@@ -61,16 +61,3 @@
     (sql/with-query-results res
       ["select username,password from users where username=?" name]
       (first (doall res)))))
-
-
-(comment
-  ;;useless, i think?
-  (defn get-hash [name]
-    (sql/with-connection db
-      (sql/with-query-results res
-	["select password from users where username=?" name]
-	(:password (first (doall res))))))
-
-  (defn validate [name password]
-    (if-let [psw (get-hash name)]
-      (BCrypt/checkpw password psw))))
